@@ -5,6 +5,10 @@ class BaremetricsException(Exception):
     pass
 
 
+class APICallNotImplemented(BaremetricsException):
+    pass
+
+
 class BaremetricsAPIException(BaremetricsException):
     def __init__(self, r_message):
         message = '[{}] {} {}'.format(

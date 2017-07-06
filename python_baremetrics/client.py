@@ -8,7 +8,7 @@ except Exception:
 
 import requests
 
-from .exceptions import BaremetricsAPIException
+from .exceptions import BaremetricsAPIException, APICallNotImplemented
 
 logger = logging.getLogger()
 
@@ -70,6 +70,8 @@ class BaremetricsClient(object):
         if r.status_code == requests.codes.ok:
             return r.json()
         raise BaremetricsAPIException(r)
+
+    # account
 
     def get_account(self):
         """
@@ -235,3 +237,116 @@ class BaremetricsClient(object):
 
     def show_customer(self, source_id, oid):
         return self.__get('{}/customers/{}'.format(source_id, oid))
+
+    def show_customer_events(self, source_id, oid):
+        return self.__get('{}/customers/{}/events'.format(source_id, oid))
+
+    def update_customer(self, source_id, customer_oid, **kwargs):
+        data = {k: v for k, v in kwargs.items() if v is not None}
+        return self.__put('{}/customers/{}'.format(source_id, customer_oid), data)
+
+    def create_customer(self, source_id, **kwargs):
+        data = {k: v for k, v in kwargs.items() if v is not None}
+        return self.__post('{}/customers'.format(source_id), data)
+
+    def delete_customer(self, source_id, oid):
+        return self.__delete('{}/customers/{}'.format(source_id, oid))
+
+    # subscriptions
+
+    def list_subscriptions(self, source_id):
+        return self.__get('{}/subscriptions'.format(source_id))
+
+    def show_subscription(self, source_id, oid):
+        return self.__get('{}/subscriptions/{}'.format(source_id, oid))
+
+    def update_subscription(self, source_id, subscription_oid, plan_oid, **kwargs):
+        data = {k: v for k, v in kwargs.items() if v is not None}
+        data.update({
+            'plan_id': plan_oid
+        })
+        return self.__put(
+            '{}/subscriptions/{}'.format(source_id, subscription_oid),
+            data)
+
+    def cancel_subscription(self, source_id, subscription_oid, canceled_at):
+        return self.__put(
+            '{}/subscriptions/{}'.format(source_id, subscription_oid),
+            data={'canceled_at': canceled_at})
+
+    def create_subscription(self, source_id, **kwargs):
+        data = {k: v for k, v in kwargs.items() if v is not None}
+        return self.__post('{}/subscriptions'.format(source_id), data)
+
+    def delete_subscription(self, source_id, subscription_oid):
+        return self.__delete('{}/subscriptions/{}'.format(source_id, subscription_oid))
+
+    # annotations
+
+    def list_annotations(self):
+        raise APICallNotImplemented
+
+    def show_annotation(self):
+        raise APICallNotImplemented
+
+    def create_annotation(self):
+        raise APICallNotImplemented
+
+    def delete_annotation(self):
+        raise APICallNotImplemented
+
+    # goals
+
+    def list_goals(self):
+        raise APICallNotImplemented
+
+    def show_goal(self):
+        raise APICallNotImplemented
+
+    def create_goal(self):
+        raise APICallNotImplemented
+
+    def delete_goal(self):
+        raise APICallNotImplemented
+
+    # users
+
+    def list_users(self):
+        return self.__get('users')
+
+    def show_user(self, oid):
+        return self.__get_url('users/{}'.format(oid))
+
+    # charges
+
+    def list_charges(self, source_id):
+        return self.__get('{}/charges'.format(source_id))
+
+    def show_charge(self, source_id, oid):
+        return self.__get('{}/charges/{}'.format(source_id, oid))
+
+    def create_charge(self, source_id, **kwargs):
+        data = {k: v for k, v in kwargs.items() if v is not None}
+        return self.__post('{}/charges'.format(source_id), data)
+
+    # events
+
+    def list_events(self, source_id):
+        return self.__get('{}/events'.format(source_id))
+
+    def show_event(self, source_id, oid):
+        return self.__get('{}/events/{}'.format(source_id, oid))
+
+    # metrics
+
+    def show_summary(self):
+        raise APICallNotImplemented
+
+    def show_metric(self):
+        raise APICallNotImplemented
+
+    def show_customers(self):
+        raise APICallNotImplemented
+
+    def show_plan_breakout(self):
+        raise APICallNotImplemented
