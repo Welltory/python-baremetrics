@@ -6,7 +6,9 @@
 
 import unittest
 
-from python_baremetrics import python_baremetrics
+from python_baremetrics import BaremetricsClient
+
+TEST_TOKEN = 'sk_u8fHvBAO4ubaMrlMSQfNlg'
 
 
 class TestPython_baremetrics(unittest.TestCase):
