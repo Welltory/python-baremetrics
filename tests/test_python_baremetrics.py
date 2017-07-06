@@ -3,7 +3,6 @@
 
 """Tests for `python_baremetrics` package."""
 
-
 import unittest
 
 from python_baremetrics import BaremetricsClient
@@ -15,10 +14,20 @@ class TestPython_baremetrics(unittest.TestCase):
     """Tests for `python_baremetrics` package."""
 
     def setUp(self):
-        """Set up test fixtures, if any."""
+        self.test_client = BaremetricsClient(token=TEST_TOKEN, sandbox=True)
 
     def tearDown(self):
-        """Tear down test fixtures, if any."""
+        del self.test_client
 
     def test_000_something(self):
-        """Test something."""
+        test_account = self.test_client.get_account()
+        self.assertIsNotNone(test_account)
+
+    def test_001_list_sources(self):
+        test_sources = self.test_client.list_sources()
+        self.assertIsNotNone(test_sources)
+
+    def test_002_list_plans(self):
+        test_sources = self.test_client.list_sources().get('sources')
+        test_plans = self.test_client.list_plans(test_sources[0]['id'])
+        self.assertIsNotNone(test_plans)

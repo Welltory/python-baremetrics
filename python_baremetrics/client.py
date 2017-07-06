@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import logging
 
 try:
     from urllib.parse import urljoin
@@ -7,15 +8,22 @@ except Exception:
 
 import requests
 
-from .exceptions import BaremetricsException
+from .exceptions import BaremetricsAPIException
+
+logger = logging.getLogger()
 
 
 class BaremetricsClient(object):
-    BASE_URL = 'https://api.baremetrics.com/v1/'
-    TOKEN = None
-
-    def __init__(self, token):
+    def __init__(self, token, api_version='v1', sandbox=False):
         self.TOKEN = token
+        self.API_VERSION = api_version
+
+        if sandbox:
+            self.DEBUG = True
+            self.BASE_URL = 'https://api-sandbox.baremetrics.com'
+        else:
+            self.DEBUG = False
+            self.BASE_URL = 'https://api.baremetrics.com'
 
     def __get_headers(self):
         return {
@@ -23,41 +31,45 @@ class BaremetricsClient(object):
             'Accept': 'application/json'
         }
 
+    def __get_url(self, url):
+        full_url = '/'.join([self.BASE_URL, self.API_VERSION, url])
+        return full_url
+
     def __get(self, url, **params):
-        full_url = urljoin(self.BASE_URL, url)
+        full_url = self.__get_url(url)
         headers = self.__get_headers()
 
         r = requests.get(full_url, headers=headers, params=params)
-        if r.status_code == 200:
+        if r.status_code == requests.codes.ok:
             return r.json()
-        raise BaremetricsException(r.content)
+        raise BaremetricsAPIException(r)
 
     def __post(self, url, data):
-        full_url = urljoin(self.BASE_URL, url)
+        full_url = self.__get_url(url)
         headers = self.__get_headers()
 
         r = requests.post(full_url, headers=headers, data=data)
-        if r.status_code == 200:
+        if r.status_code == requests.codes.ok:
             return r.json()
-        raise BaremetricsException(r.content)
+        raise BaremetricsAPIException(r)
 
     def __put(self, url, data):
-        full_url = urljoin(self.BASE_URL, url)
+        full_url = self.__get_url(url)
         headers = self.__get_headers()
 
         r = requests.put(full_url, headers=headers, data=data)
-        if r.status_code == 200:
+        if r.status_code == requests.codes.ok:
             return r.json()
-        raise BaremetricsException(r.content)
+        raise BaremetricsAPIException(r)
 
     def __delete(self, url):
-        full_url = urljoin(self.BASE_URL, url)
+        full_url = self.__get_url(url)
         headers = self.__get_headers()
 
         r = requests.delete(full_url, headers=headers)
-        if r.status_code == 200:
+        if r.status_code == requests.codes.ok:
             return r.json()
-        raise BaremetricsException(r.content)
+        raise BaremetricsAPIException(r)
 
     def get_account(self):
         """
@@ -91,6 +103,8 @@ class BaremetricsClient(object):
         """
         return self.__get('account')
 
+    # sources
+
     def list_sources(self):
         """
         :return:
@@ -110,6 +124,8 @@ class BaremetricsClient(object):
         }
         """
         return self.__get('sources')
+
+    # plans
 
     def list_plans(self, source_id):
         """
@@ -196,5 +212,26 @@ class BaremetricsClient(object):
         """
         return self.__get('{}/plans/{}'.format(source_id, plan_id))
 
-    def update_plan(self, source_id, plan_id, name):
-        return self.__put('{}/plans/{}'.format(source_id, plan_id), data={'name': name})
+    def update_plan(self, source_id, oid, name):
+        return self.__put('{}/plans/{}'.format(source_id, oid), data={'name': name})
+
+    def create_plan(self, source_id, oid, name, currency, amount, interval, interval_count):
+        return self.__post('{}/plans'.format(source_id), data={
+            'oid': oid,
+            'name': name,
+            'currency': currency,
+            'amount': amount,
+            'interval': interval,
+            'interval_count': interval_count
+        })
+
+    def delete_plan(self, source_id, oid):
+        return self.__delete('{}/plans/{}'.format(source_id, oid))
+
+    # customers
+
+    def list_customers(self, source_id):
+        return self.__get('{}/customers'.format(source_id))
+
+    def show_customer(self, source_id, oid):
+        return self.__get('{}/customers/{}'.format(source_id, oid))
