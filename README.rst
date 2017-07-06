@@ -3,18 +3,18 @@ python-baremetrics
 ==================
 
 
-.. image:: https://img.shields.io/pypi/v/python_baremetrics.svg
+.. image:: https://img.shields.io/pypi/v/python-baremetrics.svg
         :target: https://pypi.python.org/pypi/python_baremetrics
 
-.. image:: https://img.shields.io/travis/budurli/python_baremetrics.svg
+.. image:: https://img.shields.io/travis/budurli/python-baremetrics.svg
         :target: https://travis-ci.org/budurli/python_baremetrics
 
 .. image:: https://readthedocs.org/projects/python-baremetrics/badge/?version=latest
         :target: https://python-baremetrics.readthedocs.io/en/latest/?badge=latest
         :alt: Documentation Status
 
-.. image:: https://pyup.io/repos/github/budurli/python_baremetrics/shield.svg
-     :target: https://pyup.io/repos/github/budurli/python_baremetrics/
+.. image:: https://pyup.io/repos/github/budurli/python-baremetrics/shield.svg
+     :target: https://pyup.io/repos/github/budurli/python-baremetrics/
      :alt: Updates
 
 
