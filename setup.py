@@ -24,19 +24,19 @@ test_requirements = [
 ]
 
 setup(
-    name='python_baremetrics',
+    name='python-baremetrics',
     version='0.1.0',
     description="Python wrapper for Baremetrics API",
     long_description=readme + '\n\n' + history,
     author="Maxim Smirnov",
     author_email='smirnoffmg@gmail.com',
-    url='https://github.com/budurli/python_baremetrics',
+    url='https://github.com/budurli/python-baremetrics',
     packages=find_packages(include=['python_baremetrics']),
     include_package_data=True,
     install_requires=requirements,
     license="Apache Software License 2.0",
     zip_safe=False,
-    keywords='python_baremetrics',
+    keywords='baremetrics',
     classifiers=[
         'Development Status :: 2 - Pre-Alpha',
         'Intended Audience :: Developers',
