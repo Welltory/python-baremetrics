@@ -25,7 +25,7 @@ test_requirements = [
 
 setup(
     name='python-baremetrics',
-    version='0.1.0',
+    version='0.2.0',
     description="Python wrapper for Baremetrics API",
     long_description=readme + '\n\n' + history,
     author="Maxim Smirnov",

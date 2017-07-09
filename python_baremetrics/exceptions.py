@@ -11,8 +11,9 @@ class APICallNotImplemented(BaremetricsException):
 
 class BaremetricsAPIException(BaremetricsException):
     def __init__(self, r_message):
-        message = '[{}] {} {}'.format(
+        message = 'Got [{}] "{}" when calling {} {}'.format(
             r_message.status_code,
+            r_message.json().get('error'),
             r_message.request.method,
             r_message.request.url,
         )
