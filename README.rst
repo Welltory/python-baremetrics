@@ -10,7 +10,7 @@ python-baremetrics
         :target: https://travis-ci.org/budurli/python_baremetrics
 
 .. image:: https://readthedocs.org/projects/python-baremetrics/badge/?version=latest
-        :target: https://python-baremetrics.readthedocs.io/en/latest/?badge=latest
+        :target: https://python-baremetrikcs.readthedocs.io/en/latest/?badge=latest
         :alt: Documentation Status
 
 .. image:: https://pyup.io/repos/github/budurli/python-baremetrics/shield.svg
@@ -31,7 +31,7 @@ Features
 * TODO
 
 Credits
----------
+-------
 
 This package was created with Cookiecutter_ and the `audreyr/cookiecutter-pypackage`_ project template.
 

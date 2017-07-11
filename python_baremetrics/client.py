@@ -284,16 +284,17 @@ class BaremetricsClient(object):
     # annotations
 
     def list_annotations(self):
-        raise APICallNotImplemented
+        return self.__get('annotations')
 
-    def show_annotation(self):
-        raise APICallNotImplemented
+    def show_annotation(self, annotation_id):
+        return self.__get('annotations/{}'.format(annotation_id))
 
-    def create_annotation(self):
-        raise APICallNotImplemented
+    def create_annotation(self, **kwargs):
+        data = {k: v for k, v in kwargs.items() if v is not None}
+        return self.__post('annotations', data)
 
-    def delete_annotation(self):
-        raise APICallNotImplemented
+    def delete_annotation(self, annotation_id):
+        return self.__delete('annotations/{}'.format(annotation_id))
 
     # goals
 
