@@ -2,7 +2,7 @@
 deploy:
   true:
     python: 2.7
-    repo: budurli/python_baremetrics
+    repo: budurli/python-baremetrics
     tags: true
   distributions: sdist bdist_wheel
   password:
