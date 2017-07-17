@@ -10,7 +10,7 @@ import requests
 
 from .exceptions import BaremetricsAPIException, APICallNotImplemented
 
-logger = logging.getLogger()
+logger = logging.getLogger('baremetrics')
 
 
 class BaremetricsClient(object):
@@ -39,6 +39,9 @@ class BaremetricsClient(object):
         full_url = self.__get_url(url)
         headers = self.__get_headers()
 
+        if self.DEBUG:
+            logger.info('Sending GET {} to {}'.format(params, full_url))
+
         r = requests.get(full_url, headers=headers, params=params)
         if r.status_code == requests.codes.ok:
             return r.json()
@@ -47,6 +50,9 @@ class BaremetricsClient(object):
     def __post(self, url, data):
         full_url = self.__get_url(url)
         headers = self.__get_headers()
+
+        if self.DEBUG:
+            logger.info('Sending POST {} to {}'.format(data, full_url))
 
         r = requests.post(full_url, headers=headers, data=data)
         if r.status_code == requests.codes.ok:
@@ -57,6 +63,9 @@ class BaremetricsClient(object):
         full_url = self.__get_url(url)
         headers = self.__get_headers()
 
+        if self.DEBUG:
+            logger.info('Sending PUT {} to {}'.format(data, full_url))
+
         r = requests.put(full_url, headers=headers, data=data)
         if r.status_code == requests.codes.ok:
             return r.json()
@@ -65,6 +74,9 @@ class BaremetricsClient(object):
     def __delete(self, url):
         full_url = self.__get_url(url)
         headers = self.__get_headers()
+
+        if self.DEBUG:
+            logger.info('Sending DELETE to {}'.format(full_url))
 
         r = requests.delete(full_url, headers=headers)
         if r.status_code == requests.codes.ok:
