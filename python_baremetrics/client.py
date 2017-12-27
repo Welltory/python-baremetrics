@@ -79,7 +79,7 @@ class BaremetricsClient(object):
             logger.info('Sending DELETE to {}'.format(full_url))
 
         r = requests.delete(full_url, headers=headers)
-        if r.status_code == requests.codes.ok:
+        if r.status_code in (requests.codes.ok, requests.codes.accepted,):
             return r.json()
         raise BaremetricsAPIException(r)
 
