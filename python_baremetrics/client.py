@@ -266,8 +266,11 @@ class BaremetricsClient(object):
 
     # subscriptions
 
-    def list_subscriptions(self, source_id):
-        return self.__get('{}/subscriptions'.format(source_id))
+    def list_subscriptions(self, source_id, customer_oid=None):
+        url = '{}/subscriptions'.format(source_id)
+        if customer_oid:
+            url = '{}?customer_oid={}'.format(url, customer_oid)
+        return self.__get(url)
 
     def show_subscription(self, source_id, oid):
         return self.__get('{}/subscriptions/{}'.format(source_id, oid))
