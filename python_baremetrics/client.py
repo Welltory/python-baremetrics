@@ -345,6 +345,9 @@ class BaremetricsClient(object):
         data = {k: v for k, v in kwargs.items() if v is not None}
         return self.__post('{}/charges'.format(source_id), data)
 
+    def delete_charge(self, source_id, oid):
+        return self.__delete('{}/charges/{}'.format(source_id, oid))
+
     # events
 
     def list_events(self, source_id):
