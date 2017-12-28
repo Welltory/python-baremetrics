@@ -79,7 +79,7 @@ class BaremetricsClient(object):
             logger.info('Sending DELETE to {}'.format(full_url))
 
         r = requests.delete(full_url, headers=headers)
-        if r.status_code == requests.codes.ok:
+        if r.status_code in (requests.codes.ok, requests.codes.accepted,):
             return r.json()
         raise BaremetricsAPIException(r)
 
@@ -266,8 +266,11 @@ class BaremetricsClient(object):
 
     # subscriptions
 
-    def list_subscriptions(self, source_id):
-        return self.__get('{}/subscriptions'.format(source_id))
+    def list_subscriptions(self, source_id, customer_oid=None):
+        url = '{}/subscriptions'.format(source_id)
+        if customer_oid:
+            url = '{}?customer_oid={}'.format(url, customer_oid)
+        return self.__get(url)
 
     def show_subscription(self, source_id, oid):
         return self.__get('{}/subscriptions/{}'.format(source_id, oid))
@@ -341,6 +344,9 @@ class BaremetricsClient(object):
     def create_charge(self, source_id, **kwargs):
         data = {k: v for k, v in kwargs.items() if v is not None}
         return self.__post('{}/charges'.format(source_id), data)
+
+    def delete_charge(self, source_id, oid):
+        return self.__delete('{}/charges/{}'.format(source_id, oid))
 
     # events
 
