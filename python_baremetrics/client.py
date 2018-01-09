@@ -286,7 +286,7 @@ class BaremetricsClient(object):
 
     def cancel_subscription(self, source_id, subscription_oid, canceled_at):
         return self.__put(
-            '{}/subscriptions/{}'.format(source_id, subscription_oid),
+            '{}/subscriptions/{}/cancel'.format(source_id, subscription_oid),
             data={'canceled_at': canceled_at})
 
     def create_subscription(self, source_id, **kwargs):
