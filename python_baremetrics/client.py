@@ -2,8 +2,10 @@
 import logging
 
 try:
+    from urllib.parse import urlencode
     from urllib.parse import urljoin
 except Exception:
+    from urllib import urlencode
     from urlparse import urljoin
 
 import requests
@@ -82,6 +84,12 @@ class BaremetricsClient(object):
         if r.status_code in (requests.codes.ok, requests.codes.accepted,):
             return r.json()
         raise BaremetricsAPIException(r)
+
+    def __join_link_with_params(self, link, **params):
+        if params:
+            query = urlencode(params)
+            link = '{}?{}'.format(link, query)
+        return link
 
     # account
 
@@ -244,8 +252,10 @@ class BaremetricsClient(object):
 
     # customers
 
-    def list_customers(self, source_id):
-        return self.__get('{}/customers'.format(source_id))
+    def list_customers(self, source_id, **kwargs):
+        url = '{}/customers'.format(source_id)
+        url = self.__join_link_with_params(url, **kwargs)
+        return self.__get(url)
 
     def show_customer(self, source_id, oid):
         return self.__get('{}/customers/{}'.format(source_id, oid))
@@ -266,10 +276,12 @@ class BaremetricsClient(object):
 
     # subscriptions
 
-    def list_subscriptions(self, source_id, customer_oid=None):
+    def list_subscriptions(self, source_id, customer_oid=None, **kwargs):
         url = '{}/subscriptions'.format(source_id)
         if customer_oid:
             url = '{}?customer_oid={}'.format(url, customer_oid)
+
+        url = self.__join_link_with_params(url, **kwargs)
         return self.__get(url)
 
     def show_subscription(self, source_id, oid):
@@ -293,8 +305,10 @@ class BaremetricsClient(object):
         data = {k: v for k, v in kwargs.items() if v is not None}
         return self.__post('{}/subscriptions'.format(source_id), data)
 
-    def delete_subscription(self, source_id, subscription_oid):
-        return self.__delete('{}/subscriptions/{}'.format(source_id, subscription_oid))
+    def delete_subscription(self, source_id, subscription_oid, **kwargs):
+        url = '{}/subscriptions/{}'.format(source_id, subscription_oid)
+        url = self.__join_link_with_params(url, **kwargs)
+        return self.__delete(url)
 
     # annotations
 
@@ -335,8 +349,10 @@ class BaremetricsClient(object):
 
     # charges
 
-    def list_charges(self, source_id):
-        return self.__get('{}/charges'.format(source_id))
+    def list_charges(self, source_id, **kwargs):
+        url = '{}/charges'.format(source_id)
+        url = self.__join_link_with_params(url, **kwargs)
+        return self.__get(url)
 
     def show_charge(self, source_id, oid):
         return self.__get('{}/charges/{}'.format(source_id, oid))
