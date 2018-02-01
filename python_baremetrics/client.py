@@ -290,7 +290,7 @@ class BaremetricsClient(object):
     def update_subscription(self, source_id, subscription_oid, plan_oid, **kwargs):
         data = {k: v for k, v in kwargs.items() if v is not None}
         data.update({
-            'plan_id': plan_oid
+            'plan_oid': plan_oid
         })
         return self.__put(
             '{}/subscriptions/{}'.format(source_id, subscription_oid),
