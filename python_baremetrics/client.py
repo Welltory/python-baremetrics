@@ -260,8 +260,10 @@ class BaremetricsClient(object):
     def show_customer(self, source_id, oid):
         return self.__get('{}/customers/{}'.format(source_id, oid))
 
-    def show_customer_events(self, source_id, oid):
-        return self.__get('{}/customers/{}/events'.format(source_id, oid))
+    def show_customer_events(self, source_id, oid, **kwargs):
+        url = '{}/customers/{}/events'.format(source_id, oid)
+        url = self.__join_link_with_params(url, **kwargs)
+        return self.__get(url)
 
     def update_customer(self, source_id, customer_oid, **kwargs):
         data = {k: v for k, v in kwargs.items() if v is not None}
