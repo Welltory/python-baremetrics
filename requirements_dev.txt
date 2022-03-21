@@ -8,4 +8,4 @@ coverage==6.3.2
 Sphinx==4.4.0
 cryptography==36.0.2
 PyYAML==6.0
-simplejson==3.13.2
+simplejson==3.17.6
